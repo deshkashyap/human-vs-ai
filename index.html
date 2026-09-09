@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Human vs AI — Cognitive Intelligence Arena">
+  <title>Human vs AI | Cognitive Intelligence Arena</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #050816;
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    nav {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 7%;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(5,8,22,.85);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(15px);
+    }
+
+    .logo {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: .5px;
+    }
+
+    .logo span {
+      opacity: .55;
+    }
+
+    nav a {
+      color: #aaaec5;
+      text-decoration: none;
+      margin-left: 28px;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    .hero {
+      min-height: calc(100vh - 70px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: #4f46e5;
+      filter: blur(140px);
+      opacity: .18;
+    }
+
+    .orb.one {
+      top: -180px;
+      left: -100px;
+    }
+
+    .orb.two {
+      bottom: -220px;
+      right: -100px;
+      background: #06b6d4;
+    }
+
+    .hero-content {
+      max-width: 950px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 9px 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 50px;
+      background: rgba(255,255,255,.04);
+      color: #b8bdd8;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      font-size: clamp(48px, 8vw, 92px);
+      line-height: .95;
+      letter-spacing: -4px;
+      margin-bottom: 28px;
+    }
+
+    h1 span {
+      background: linear-gradient(90deg, #8b5cf6, #22d3ee);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: auto;
+      color: #9da3bd;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .buttons {
+      margin-top: 35px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      padding: 15px 25px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .primary {
+      background: linear-gradient(90deg, #7c3aed, #0891b2);
+      color: white;
+      box-shadow: 0 15px 40px rgba(79,70,229,.25);
+    }
+
+    .secondary {
+      background: rgba(255,255,255,.05);
+      color: white;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .arena {
+      padding: 90px 7%;
+      background: #070b1d;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .section-title p {
+      color: #8e95b1;
+    }
+
+    .arena-grid {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .card {
+      padding: 32px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(255,255,255,.08);
+      transition: .3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(139,92,246,.45);
+    }
+
+    .icon {
+      font-size: 35px;
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      font-size: 21px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #9299b4;
+      line-height: 1.6;
+    }
+
+    .stats {
+      max-width: 1100px;
+      margin: 25px auto 0;
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 15px;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 25px 10px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(255,255,255,.07);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 30px;
+      margin-bottom: 7px;
+    }
+
+    .stat span {
+      color: #858ca8;
+      font-size: 13px;
+    }
+
+    .cta {
+      text-align: center;
+      padding: 100px 20px;
+    }
+
+    .cta h2 {
+      font-size: 45px;
+      margin-bottom: 18px;
+    }
+
+    .cta p {
+      color: #9299b4;
+      margin-bottom: 30px;
+    }
+
+    footer {
+      padding: 30px 7%;
+      border-top: 1px solid rgba(255,255,255,.07);
+      text-align: center;
+      color: #666d87;
+      font-size: 13px;
+    }
+
+    @media(max-width: 700px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      nav div:last-child {
+        display: none;
+      }
+
+      .arena-grid,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+
+      .section-title h2,
+      .cta h2 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">HUMAN <span>vs</span> AI</div>
+    <div>
+      <a href="#arena">Arena</a>
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+
+    <div class="hero-content">
+      <div class="badge">◉ COGNITIVE INTELLIGENCE EXPERIMENT</div>
+
+      <h1>
+        Human <span>vs</span><br>
+        Artificial Intelligence
+      </h1>
+
+      <p>
+        A next-generation cognitive arena where human reasoning
+        goes head-to-head with artificial intelligence.
+        Think. Decide. Challenge. Discover.
+      </p>
+
+      <div class="buttons">
+        <button class="primary" onclick="startChallenge()">
+          Enter the Arena →
+        </button>
+
+        <button class="secondary" onclick="scrollToArena()">
+          Explore Project
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="arena" id="arena">
+
+    <div class="section-title">
+      <h2>The Cognitive Arena</h2>
+      <p>Measure intelligence beyond the final answer.</p>
+    </div>
+
+    <div class="arena-grid" id="features">
+
+      <div class="card">
+        <div class="icon">🧠</div>
+        <h3>Human Reasoning</h3>
+        <p>
+          Solve challenges using your own logic, creativity,
+          intuition and decision-making ability.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="icon">🤖</div>
+        <h3>AI Intelligence</h3>
+        <p>
+          Compare your solution against an AI-generated
+          solution and analyze the difference.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="icon">📊</div>
+        <h3>Cognitive Analytics</h3>
+        <p>
+          Analyze accuracy, reasoning quality, consistency,
+          response time and overall performance.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="icon">⚡</div>
+        <h3>Adaptive Challenges</h3>
+        <p>
+          Future versions will dynamically change challenge
+          difficulty based on your performance.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <strong>01</strong>
+        <span>Human</span>
+      </div>
+
+      <div class="stat">
+        <strong>01</strong>
+        <span>AI</span>
+      </div>
+
+      <div class="stat">
+        <strong>∞</strong>
+        <span>Possibilities</span>
+      </div>
+
+      <div class="stat">
+        <strong>?</strong>
+        <span>Winner</span>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="cta" id="about">
+    <h2>Who Thinks Better?</h2>
+    <p>The experiment starts with a single question.</p>
+
+    <button class="primary" onclick="startChallenge()">
+      Start Human vs AI →
+    </button>
+  </section>
+
+  <footer>
+    © 2026 Human vs AI — Cognitive Intelligence Arena
+    <br><br>
+    Built by Desh Deepak
+  </footer>
+
+  <script>
+    function startChallenge() {
+      alert(
+        "🚀 Cognitive Arena coming online...\\n\\n" +
+        "Next module: Human vs AI Challenge Engine"
+      );
+    }
+
+    function scrollToArena() {
+      document.getElementById("arena").scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  </script>
+
+</body>
+</html>
