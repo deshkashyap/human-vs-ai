@@ -272,48 +272,69 @@ function showResult(
   arena.innerHTML = `
     <div class="result-box">
 
-      <h2>🏆 Cognitive Intelligence Result</h2>
+      <h1>🏆 Cognitive Intelligence Report</h1>
 
-      <h3>Winner: ${winner}</h3>
+      <h2>${winner === "HUMAN" ? "🧠 HUMAN WINS" :
+            winner === "AI" ? "🤖 AI WINS" :
+            "⚔️ DRAW"}</h2>
+
+      <p>Challenge performance analyzed by AI.</p>
 
       <div class="score-container">
 
-        <div>
-          <h3>🧠 Human</h3>
-          <div class="score">${humanScore}/100</div>
+        <div class="score-card">
+          <div class="icon">🧠</div>
+          <h2>Human Performance</h2>
+          <div class="big-score">${humanScore}</div>
+
+          <p>Accuracy: ${accuracy}%</p>
+          <p>Reasoning: ${reasoningScore}/100</p>
+          <p>Creativity: ${creativity}/100</p>
         </div>
 
-        <div>
-          <h3>🤖 AI</h3>
-          <div class="score">${aiScore}/100</div>
+        <div class="score-card">
+          <div class="icon">🤖</div>
+          <h2>AI Performance</h2>
+          <div class="big-score">${aiScore}</div>
+
+          <p>AI cognitive benchmark</p>
+          <p>Accuracy comparison</p>
+          <p>Reasoning comparison</p>
         </div>
 
       </div>
 
-      <hr>
+      <div class="analysis-card">
 
-      <h3>📊 Cognitive Analysis</h3>
+        <h2>🧠 AI Cognitive Analysis</h2>
 
-      <p><strong>Accuracy:</strong> ${accuracy}/100</p>
+        <p>${analysis}</p>
 
-      <p><strong>Reasoning:</strong> ${reasoningScore}/100</p>
+      </div>
 
-      <p><strong>Creativity:</strong> ${creativity}/100</p>
+      <div class="winner-card">
 
-      <h3>🤖 AI Evaluation</h3>
+        <h2>⚡ Final Verdict</h2>
 
-      <p>${analysis}</p>
+        <p>
+          Human Score: <strong>${humanScore}</strong>
+          &nbsp; vs &nbsp;
+          AI Score: <strong>${aiScore}</strong>
+        </p>
+
+        <h2>${winner}</h2>
+
+      </div>
 
       <br>
 
-      <button onclick="nextChallenge()">
+      <button class="primary" onclick="nextChallenge()">
         Next Challenge →
       </button>
 
     </div>
   `;
 }
-
 // ------------------------------------------
 // Next Challenge
 // ------------------------------------------
