@@ -167,14 +167,12 @@ function startTimer() {
 // Submit Answer
 // ------------------------------------------
 
-function submitAnswer() {
+async function submitAnswer() {
 
   clearInterval(timerInterval);
 
   const userAnswer =
-    document.getElementById("userAnswer").value
-      .trim()
-      .toLowerCase();
+    document.getElementById("userAnswer").value.trim();
 
   const reasoning =
     document.getElementById("reasoning").value.trim();
@@ -191,161 +189,130 @@ function submitAnswer() {
 
   const challenge = challenges[currentChallenge];
 
-  const correct =
-    userAnswer === challenge.answer.toLowerCase();
+  const resultArea = document.getElementById("result");
 
-  const responseTime =
-    Math.floor((Date.now() - startTime) / 1000);
-
-  if (correct) {
-    score += 100;
-  } else {
-    score += 40;
+  if (resultArea) {
+    resultArea.innerHTML = `
+      <div class="result-box">
+        <h2>🤖 AI is analyzing...</h2>
+        <p>Comparing human reasoning with AI intelligence.</p>
+      </div>
+    `;
   }
 
-  showResult(
-    correct,
-    responseTime,
-    reasoning,
-    challenge
-  );
-}
+  try {
 
+    const response = await fetch(
+      "https://human-vs-ai-flame.vercel.app/api/evaluate",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          question: challenge.question,
+          humanAnswer: userAnswer,
+          reasoning: reasoning
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "AI evaluation failed");
+    }
+
+    console.log("AI Evaluation:", data);
+
+    showResult(
+      data.humanScore,
+      data.aiScore,
+      data.accuracy,
+      data.reasoning,
+      data.creativity,
+      data.analysis,
+      data.winner
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    if (resultArea) {
+      resultArea.innerHTML = `
+        <div class="result-box">
+          <h2>⚠️ AI Evaluation Failed</h2>
+          <p>${error.message}</p>
+          <p>Please try again.</p>
+        </div>
+      `;
+    }
+  }
+}
 
 // ------------------------------------------
 // Result
 // ------------------------------------------
 
 function showResult(
-  correct,
-  responseTime,
-  reasoning,
-  challenge
+  humanScore,
+  aiScore,
+  accuracy,
+  reasoningScore,
+  creativity,
+  analysis,
+  winner
 ) {
 
   const arena = document.getElementById("arena");
 
-  const humanScore = correct ? 88 : 42;
-
-  const aiScore = Math.floor(
-    75 + Math.random() * 20
-  );
-
-  const winner =
-    humanScore >= aiScore
-      ? "🏆 HUMAN WINS"
-      : "🤖 AI WINS";
-
   arena.innerHTML = `
+    <div class="result-box">
 
-    <div class="section-title">
+      <h2>🏆 Cognitive Intelligence Result</h2>
 
-      <div class="badge">
-        COGNITIVE ANALYSIS COMPLETE
-      </div>
+      <h3>Winner: ${winner}</h3>
 
-      <h2>${winner}</h2>
+      <div class="score-container">
 
-      <p>
-        Challenge performance analyzed.
-      </p>
+        <div>
+          <h3>🧠 Human</h3>
+          <div class="score">${humanScore}/100</div>
+        </div>
 
-    </div>
-
-    <div class="arena-grid">
-
-      <div class="card">
-
-        <div class="icon">🧠</div>
-
-        <h3>Human Performance</h3>
-
-        <h2 style="
-          font-size:55px;
-          margin:15px 0;
-        ">
-          ${humanScore}
-        </h2>
-
-        <p>
-          Accuracy: ${correct ? "100%" : "0%"}<br>
-          Reasoning: ${reasoning.length > 40 ? "Strong" : "Basic"}<br>
-          Response Time: ${responseTime}s
-        </p>
+        <div>
+          <h3>🤖 AI</h3>
+          <div class="score">${aiScore}/100</div>
+        </div>
 
       </div>
 
+      <hr>
 
-      <div class="card">
+      <h3>📊 Cognitive Analysis</h3>
 
-        <div class="icon">🤖</div>
+      <p><strong>Accuracy:</strong> ${accuracy}/100</p>
 
-        <h3>AI Performance</h3>
+      <p><strong>Reasoning:</strong> ${reasoningScore}/100</p>
 
-        <h2 style="
-          font-size:55px;
-          margin:15px 0;
-        ">
-          ${aiScore}
-        </h2>
+      <p><strong>Creativity:</strong> ${creativity}/100</p>
 
-        <p>
-          AI benchmark score generated
-          for comparison.
-        </p>
+      <h3>🤖 AI Evaluation</h3>
 
-      </div>
-
-    </div>
-
-
-    <div class="card" style="
-      max-width:1100px;
-      margin:25px auto;
-    ">
-
-      <h3>🔍 AI Analysis</h3>
+      <p>${analysis}</p>
 
       <br>
 
-      <p>
-        ${challenge.explanation}
-      </p>
-
-      <br>
-
-      <p>
-        Your response was evaluated using
-        accuracy, reasoning quality and
-        response time.
-      </p>
-
-    </div>
-
-
-    <div style="
-      text-align:center;
-      margin-top:30px;
-    ">
-
-      ${
-        currentChallenge < challenges.length - 1
-        ?
-        `<button class="primary"
-          onclick="nextChallenge()">
-          Next Challenge →
-        </button>`
-        :
-        `<button class="primary"
-          onclick="startChallenge()">
-          Restart Experiment ↻
-        </button>`
-      }
+      <button onclick="nextChallenge()">
+        Next Challenge →
+      </button>
 
     </div>
   `;
 }
-
 
 // ------------------------------------------
 // Next Challenge
